@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Home } from "./pages/Home/Home";
+import { Route } from "react-router-dom";
+import { Room } from "./pages/Room/Room";
 
-function App() {
+export const App = () => {
+  const [roomUsers, setRoomUsers] = useState([]);
+  const [messages, setMessages] = useState([]);
+
+  const addMessage = (msg) => {
+    setMessages((messages) => messages.concat(msg));
+  };
+
+  const addRoomUsers = (users) => setRoomUsers(users);
+
+  const clearMessages = () => setMessages([]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Route path="/" exact component={Home} />
+      <Route
+        path="/room"
+        render={() => (
+          <Room
+            roomUsers={roomUsers}
+            addRoomUsers={addRoomUsers}
+            clearMessages={clearMessages}
+            messages={messages}
+            addMessage={addMessage}
+          />
+        )}
+      />
     </div>
   );
-}
-
-export default App;
+};
